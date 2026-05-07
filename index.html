@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DeskFuel Snacks — Fuel Your Day. Power Your Work.</title>
+<style>
+  :root{
+    --orange:#D85A30;--amber:#EF9F27;--dark:#111111;--darker:#0a0a0a;
+    --white:#ffffff;--lgray:#f8f7f4;--mgray:#888;--card:#1e1e1e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #222;padding:0 5%;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .nav-logo{font-size:1.5rem;font-weight:900;letter-spacing:-0.5px;}
+  .nav-logo span{color:var(--orange);}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{color:#aaa;text-decoration:none;font-size:.9rem;letter-spacing:.5px;transition:color .2s;}
+  .nav-links a:hover{color:var(--amber);}
+  .nav-cta{background:var(--orange);color:#fff;padding:.5rem 1.4rem;border-radius:50px;font-size:.85rem;font-weight:700;text-decoration:none;transition:background .2s;}
+  .nav-cta:hover{background:var(--amber);}
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:0 5%;position:relative;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 30% 50%, rgba(216,90,48,.12) 0%, transparent 70%);}
+  .hero-content{max-width:560px;z-index:2;animation:fadeUp .8s ease both;}
+  .hero-badge{display:inline-block;background:rgba(216,90,48,.15);border:1px solid var(--orange);color:var(--amber);font-size:.75rem;letter-spacing:3px;padding:.35rem 1rem;border-radius:50px;margin-bottom:1.5rem;text-transform:uppercase;}
+  .hero-title{font-size:4rem;font-weight:900;line-height:1.05;margin-bottom:1.2rem;}
+  .hero-title .accent{color:var(--orange);}
+  .hero-sub{font-size:1.1rem;color:#aaa;line-height:1.7;margin-bottom:2rem;max-width:460px;}
+  .hero-buttons{display:flex;gap:1rem;flex-wrap:wrap;}
+  .btn-primary{background:var(--orange);color:#fff;padding:.85rem 2rem;border-radius:50px;font-weight:700;text-decoration:none;transition:all .2s;font-size:.95rem;}
+  .btn-primary:hover{background:var(--amber);transform:translateY(-2px);}
+  .btn-secondary{background:transparent;color:#fff;padding:.85rem 2rem;border-radius:50px;font-weight:700;text-decoration:none;border:1.5px solid #333;transition:all .2s;font-size:.95rem;}
+  .btn-secondary:hover{border-color:var(--orange);color:var(--orange);}
+  .hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid #222;}
+  .stat-val{font-size:1.8rem;font-weight:900;color:var(--amber);}
+  .stat-lbl{font-size:.75rem;color:var(--mgray);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+  .hero-visual{position:absolute;right:5%;top:50%;transform:translateY(-50%);opacity:.15;font-size:18rem;line-height:1;pointer-events:none;}
+
+  /* SECTION COMMON */
+  section{padding:6rem 5%;}
+  .section-tag{font-size:.75rem;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:.8rem;}
+  .section-title{font-size:2.5rem;font-weight:900;line-height:1.1;margin-bottom:1rem;}
+  .section-sub{color:#aaa;font-size:1rem;line-height:1.7;max-width:560px;}
+
+  /* MARQUEE */
+  .marquee-wrapper{background:var(--orange);padding:.7rem 0;overflow:hidden;}
+  .marquee-track{display:flex;gap:0;animation:marquee 22s linear infinite;white-space:nowrap;}
+  .marquee-track span{font-size:.8rem;font-weight:700;letter-spacing:2px;color:#fff;padding:0 2rem;text-transform:uppercase;}
+  .marquee-track .dot{color:rgba(255,255,255,.4);}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* PRODUCTS */
+  #products{background:var(--lgray);}
+  #products .section-title{color:var(--dark);}
+  #products .section-sub{color:#555;}
+  #products .section-tag{color:var(--orange);}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem;}
+  .product-card{background:#fff;border-radius:20px;overflow:hidden;transition:transform .25s,box-shadow .25s;border:1.5px solid #eee;}
+  .product-card:hover{transform:translateY(-8px);box-shadow:0 24px 48px rgba(0,0,0,.12);}
+  .product-card.featured{border-color:var(--orange);border-width:2px;}
+  .card-hero{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .card-bg-1{background:linear-gradient(135deg,#1a0a00,#3B1A08);}
+  .card-bg-2{background:linear-gradient(135deg,#001a0a,#0a3018);}
+  .card-bg-3{background:linear-gradient(135deg,#1a001a,#2d0035);}
+  .card-bg-4{background:linear-gradient(135deg,#0a0a1a,#1a1a3d);}
+  .card-emoji{font-size:4rem;z-index:1;filter:drop-shadow(0 8px 16px rgba(0,0,0,.4));}
+  .card-badge{position:absolute;top:12px;right:12px;background:var(--orange);color:#fff;font-size:.65rem;font-weight:700;padding:.25rem .75rem;border-radius:50px;letter-spacing:1px;}
+  .card-badge.soon{background:#333;color:#aaa;}
+  .card-body{padding:1.25rem;}
+  .card-name{font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:.3rem;}
+  .card-flavor{font-size:.8rem;color:var(--orange);font-weight:600;letter-spacing:.5px;margin-bottom:.6rem;}
+  .card-desc{font-size:.82rem;color:#666;line-height:1.6;margin-bottom:1rem;}
+  .card-macros{display:flex;gap:.75rem;margin-bottom:1rem;}
+  .macro{text-align:center;background:var(--lgray);padding:.35rem .6rem;border-radius:8px;flex:1;}
+  .macro-val{font-size:.9rem;font-weight:800;color:var(--dark);}
+  .macro-lbl{font-size:.6rem;color:#888;text-transform:uppercase;}
+  .card-price{font-size:1.1rem;font-weight:900;color:var(--dark);}
+  .card-price .cents{font-size:.75rem;font-weight:600;color:#888;}
+  .card-btn{display:block;background:var(--dark);color:#fff;text-align:center;padding:.6rem;border-radius:50px;text-decoration:none;font-size:.82rem;font-weight:700;transition:background .2s;margin-top:.75rem;}
+  .card-btn:hover{background:var(--orange);}
+  .card-btn.soon-btn{background:#eee;color:#999;cursor:not-allowed;}
+
+  /* WHY US */
+  #why{background:var(--darker);}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:3rem;}
+  .why-card{background:var(--card);border-radius:16px;padding:1.75rem;border:1px solid #2a2a2a;transition:border-color .2s;}
+  .why-card:hover{border-color:var(--orange);}
+  .why-icon{font-size:2rem;margin-bottom:1rem;}
+  .why-title{font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--amber);}
+  .why-text{font-size:.85rem;color:#888;line-height:1.6;}
+
+  /* HOW IT WORKS */
+  #how{background:var(--dark);}
+  .steps{display:flex;gap:0;margin-top:3.5rem;position:relative;}
+  .steps::before{content:'';position:absolute;top:36px;left:calc(36px + 1.5rem);right:calc(36px + 1.5rem);height:2px;background:linear-gradient(to right,var(--orange),var(--amber));z-index:0;}
+  .step{flex:1;text-align:center;padding:0 1rem;position:relative;z-index:1;}
+  .step-num{width:72px;height:72px;border-radius:50%;background:var(--orange);color:#fff;font-size:1.5rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;border:4px solid var(--dark);}
+  .step-title{font-size:1rem;font-weight:700;margin-bottom:.4rem;}
+  .step-text{font-size:.82rem;color:#888;line-height:1.5;}
+
+  /* SOCIAL PROOF */
+  #proof{background:var(--lgray);}
+  #proof .section-title{color:var(--dark);}
+  #proof .section-tag{color:var(--orange);}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:2.5rem;}
+  .review-card{background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #eee;}
+  .stars{color:var(--amber);font-size:1.1rem;margin-bottom:.75rem;}
+  .review-text{font-size:.88rem;color:#444;line-height:1.6;margin-bottom:1rem;font-style:italic;}
+  .reviewer{display:flex;align-items:center;gap:.75rem;}
+  .reviewer-avatar{width:40px;height:40px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+  .reviewer-name{font-size:.85rem;font-weight:700;color:var(--dark);}
+  .reviewer-title{font-size:.75rem;color:#888;}
+
+  /* SUBSCRIPTION */
+  #subscribe{background:var(--darker);}
+  .sub-card{background:linear-gradient(135deg,rgba(216,90,48,.15),rgba(239,159,39,.08));border:1px solid rgba(216,90,48,.3);border-radius:24px;padding:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+  .sub-title{font-size:2rem;font-weight:900;margin-bottom:1rem;}
+  .sub-title span{color:var(--orange);}
+  .sub-text{color:#aaa;line-height:1.7;margin-bottom:1.5rem;}
+  .sub-perks{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+  .sub-perks li{font-size:.9rem;color:#ccc;display:flex;align-items:center;gap:.5rem;}
+  .sub-perks li::before{content:"✓";color:var(--amber);font-weight:700;}
+  .sub-price-box{text-align:center;background:var(--dark);border-radius:20px;padding:2.5rem 2rem;}
+  .sub-price{font-size:3.5rem;font-weight:900;color:var(--amber);}
+  .sub-price-per{color:#888;font-size:.9rem;margin-bottom:1.5rem;}
+  .sub-includes{font-size:.8rem;color:#aaa;line-height:1.8;margin-bottom:1.5rem;}
+  .sub-cta{display:block;background:var(--orange);color:#fff;padding:.9rem 2rem;border-radius:50px;text-decoration:none;font-weight:700;transition:background .2s;font-size:.95rem;}
+  .sub-cta:hover{background:var(--amber);}
+
+  /* ABOUT */
+  #about{background:var(--dark);text-align:center;}
+  #about .section-title{margin:0 auto 1rem;}
+  #about .section-sub{margin:0 auto 2.5rem;text-align:center;}
+  .about-values{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:2rem;}
+  .value-item{text-align:center;max-width:160px;}
+  .value-icon{font-size:2.5rem;margin-bottom:.75rem;}
+  .value-name{font-size:.85rem;font-weight:700;color:var(--amber);}
+
+  /* CTA BANNER */
+  .cta-banner{background:var(--orange);padding:4rem 5%;text-align:center;}
+  .cta-banner h2{font-size:2.5rem;font-weight:900;margin-bottom:.75rem;}
+  .cta-banner p{color:rgba(255,255,255,.8);margin-bottom:2rem;font-size:1rem;}
+  .cta-banner .btn-white{background:#fff;color:var(--orange);padding:1rem 2.5rem;border-radius:50px;font-weight:700;text-decoration:none;font-size:1rem;transition:all .2s;display:inline-block;}
+  .cta-banner .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+
+  /* FOOTER */
+  footer{background:var(--darker);padding:3rem 5% 2rem;border-top:1px solid #1a1a1a;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem;}
+  .footer-brand .brand-name{font-size:1.4rem;font-weight:900;margin-bottom:.75rem;}
+  .footer-brand .brand-name span{color:var(--orange);}
+  .footer-brand p{font-size:.82rem;color:#666;line-height:1.7;max-width:240px;}
+  .footer-col h4{font-size:.8rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:1rem;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+  .footer-col ul li a{font-size:.85rem;color:#666;text-decoration:none;transition:color .2s;}
+  .footer-col ul li a:hover{color:var(--amber);}
+  .footer-bottom{border-top:1px solid #1a1a1a;padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;}
+  .footer-bottom p{font-size:.78rem;color:#444;}
+  .social-links{display:flex;gap:1rem;}
+  .social-links a{color:#555;font-size:1.1rem;text-decoration:none;transition:color .2s;}
+  .social-links a:hover{color:var(--amber);}
+
+  /* ANIMATIONS */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:768px){
+    .hero-title{font-size:2.5rem;}
+    .steps{flex-direction:column;gap:2rem;}
+    .steps::before{display:none;}
+    .sub-card{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    nav .nav-links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Desk<span>Fuel</span></div>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#subscribe">Subscribe</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a href="#subscribe" class="nav-cta">Get Your Box →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🔥 Now Available in Austin, TX</div>
+    <h1 class="hero-title">Snacks Built for the <span class="accent">9-to-5</span> Warrior</h1>
+    <p class="hero-sub">DeskFuel Snacks makes bold, clean-label snack bars for people who work hard and snack harder. Real ingredients. Big flavor. No junk.</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn-primary">Shop Now 🛒</a>
+      <a href="#subscribe" class="btn-secondary">Subscribe & Save</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-val">180</div><div class="stat-lbl">Calories</div></div>
+      <div><div class="stat-val">6g</div><div class="stat-lbl">Protein</div></div>
+      <div><div class="stat-val">$3.99</div><div class="stat-lbl">Per bar</div></div>
+      <div><div class="stat-val">0</div><div class="stat-lbl">Artificial flavors</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">🍫</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee-track">
+    <span>FUEL YOUR DAY</span><span class="dot">·</span>
+    <span>POWER YOUR WORK</span><span class="dot">·</span>
+    <span>REAL INGREDIENTS</span><span class="dot">·</span>
+    <span>BOLD FLAVORS</span><span class="dot">·</span>
+    <span>CLEAN LABEL</span><span class="dot">·</span>
+    <span>DESK-READY SNACKS</span><span class="dot">·</span>
+    <span>NON-GMO</span><span class="dot">·</span>
+    <span>GLUTEN FREE</span><span class="dot">·</span>
+    <span>FUEL YOUR DAY</span><span class="dot">·</span>
+    <span>POWER YOUR WORK</span><span class="dot">·</span>
+    <span>REAL INGREDIENTS</span><span class="dot">·</span>
+    <span>BOLD FLAVORS</span><span class="dot">·</span>
+    <span>CLEAN LABEL</span><span class="dot">·</span>
+    <span>DESK-READY SNACKS</span><span class="dot">·</span>
+    <span>NON-GMO</span><span class="dot">·</span>
+    <span>GLUTEN FREE</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-tag">Our Lineup</div>
+  <h2 class="section-title" style="color:var(--dark)">The Deskbite Collection</h2>
+  <p class="section-sub">Every bar is crafted for maximum flavor and minimum guilt. Current and upcoming flavors below.</p>
+  <div class="products-grid">
+
+    <!-- Flavor 1 — Hero -->
+    <div class="product-card featured fade-up">
+      <div class="card-hero card-bg-1">
+        <div class="card-emoji">🌶️🥭🍫</div>
+        <div class="card-badge">BEST SELLER</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Deskbite Original</div>
+        <div class="card-flavor">Chili Mango Dark Chocolate</div>
+        <div class="card-desc">70% dark choc shell, sun-dried mango, lime-chili kick, oat & pretzel crunch. The bar that started it all.</div>
+        <div class="card-macros">
+          <div class="macro"><div class="macro-val">180</div><div class="macro-lbl">Cal</div></div>
+          <div class="macro"><div class="macro-val">6g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro"><div class="macro-val">4g</div><div class="macro-lbl">Fiber</div></div>
+        </div>
+        <div class="card-price">$3.99 <span class="cents">per bar</span></div>
+        <a href="#subscribe" class="card-btn">Add to Box →</a>
+      </div>
+    </div>
+
+    <!-- Flavor 2 -->
+    <div class="product-card fade-up">
+      <div class="card-hero card-bg-2">
+        <div class="card-emoji">☕🍮🥜</div>
+        <div class="card-badge">NEW</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Deskbite Espresso</div>
+        <div class="card-flavor">Espresso Caramel Pretzel</div>
+        <div class="card-desc">Bold espresso chocolate coat, salted caramel filling, pretzel bits. Your afternoon coffee, in bar form.</div>
+        <div class="card-macros">
+          <div class="macro"><div class="macro-val">190</div><div class="macro-lbl">Cal</div></div>
+          <div class="macro"><div class="macro-val">7g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro"><div class="macro-val">3g</div><div class="macro-lbl">Fiber</div></div>
+        </div>
+        <div class="card-price">$3.99 <span class="cents">per bar</span></div>
+        <a href="#subscribe" class="card-btn">Add to Box →</a>
+      </div>
+    </div>
+
+    <!-- Flavor 3 -->
+    <div class="product-card fade-up">
+      <div class="card-hero card-bg-3">
+        <div class="card-emoji">🍯🥜✨</div>
+        <div class="card-badge">Q2 2026</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Deskbite Honey PB</div>
+        <div class="card-flavor">Peanut Butter Honey Crunch</div>
+        <div class="card-desc">Creamy PB ribbons, wildflower honey drizzle, toasted oat crunch. Cozy desk energy, all day long.</div>
+        <div class="card-macros">
+          <div class="macro"><div class="macro-val">195</div><div class="macro-lbl">Cal</div></div>
+          <div class="macro"><div class="macro-val">8g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro"><div class="macro-val">4g</div><div class="macro-lbl">Fiber</div></div>
+        </div>
+        <div class="card-price">Coming Q2 2026</div>
+        <a href="#subscribe" class="card-btn soon-btn">Notify Me</a>
+      </div>
+    </div>
+
+    <!-- Flavor 4 -->
+    <div class="product-card fade-up">
+      <div class="card-hero card-bg-4">
+        <div class="card-emoji">🍦🌰💫</div>
+        <div class="card-badge soon">Q3 2026</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Deskbite White Almond</div>
+        <div class="card-flavor">White Chocolate Almond Crunch</div>
+        <div class="card-desc">Creamy white choc, slivered almonds, crispy rice puffs. Light, crunchy, and completely addictive.</div>
+        <div class="card-macros">
+          <div class="macro"><div class="macro-val">175</div><div class="macro-lbl">Cal</div></div>
+          <div class="macro"><div class="macro-val">5g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro"><div class="macro-val">3g</div><div class="macro-lbl">Fiber</div></div>
+        </div>
+        <div class="card-price">Coming Q3 2026</div>
+        <a href="#subscribe" class="card-btn soon-btn">Notify Me</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-tag">The DeskFuel Difference</div>
+  <h2 class="section-title">Built for People<br>Who Get Things Done</h2>
+  <div class="why-grid">
+    <div class="why-card fade-up"><div class="why-icon">🌿</div><div class="why-title">Clean Ingredients</div><div class="why-text">No artificial flavors, no mystery ingredients. Every item you can pronounce and trust.</div></div>
+    <div class="why-card fade-up"><div class="why-icon">⚡</div><div class="why-title">Functional Energy</div><div class="why-text">Designed for sustained focus — not a sugar spike that crashes at 3:30pm.</div></div>
+    <div class="why-card fade-up"><div class="why-icon">🌶️</div><div class="why-title">Bold Global Flavors</div><div class="why-text">We source real chili, real mango, real dark cacao. Boring snacks are a crime.</div></div>
+    <div class="why-card fade-up"><div class="why-icon">📦</div><div class="why-title">Desk-Ready Format</div><div class="why-text">No mess, no crumbs everywhere, no regrets. The perfect drawer snack.</div></div>
+    <div class="why-card fade-up"><div class="why-icon">🔬</div><div class="why-title">Data-Driven Recipe</div><div class="why-text">Built on analysis of 10,000+ snack data points. We know what works and what doesn't.</div></div>
+    <div class="why-card fade-up"><div class="why-icon">🌍</div><div class="why-title">Planet-Conscious</div><div class="why-text">Plant-friendly ingredients, recyclable wrappers, and a brand that actually gives a damn.</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-tag">Simple as Snacking</div>
+  <h2 class="section-title">How Your Box Works</h2>
+  <div class="steps">
+    <div class="step fade-up"><div class="step-num">1</div><div class="step-title">Pick Your Flavors</div><div class="step-text">Choose your favorites or let us surprise you with the DeskFuel Mix Box.</div></div>
+    <div class="step fade-up"><div class="step-num">2</div><div class="step-title">We Ship Monthly</div><div class="step-text">Fresh bars delivered to your door (or office!) every month. Cancel anytime.</div></div>
+    <div class="step fade-up"><div class="step-num">3</div><div class="step-title">Snack Smarter</div><div class="step-text">Never run out. Never settle for a sad vending machine. Always fueled up.</div></div>
+    <div class="step fade-up"><div class="step-num">4</div><div class="step-title">Earn Rewards</div><div class="step-text">Every box earns DeskPoints. Redeem for free bars, merch, and early flavor drops.</div></div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="proof">
+  <div class="section-tag">Real Desk Workers. Real Reviews.</div>
+  <h2 class="section-title" style="color:var(--dark)">People Are Talking 🔥</h2>
+  <div class="reviews-grid">
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Obsessed. I've been eating the Chili Mango bar every single afternoon for 3 weeks. My coworkers are jealous and I've started gifting boxes."</p>
+      <div class="reviewer"><div class="reviewer-avatar">SK</div><div><div class="reviewer-name">Sarah K.</div><div class="reviewer-title">Product Manager, Austin TX</div></div></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Finally a snack that doesn't taste like cardboard OR make me feel guilty. The chili kick is perfect. I'm a subscriber for life."</p>
+      <div class="reviewer"><div class="reviewer-avatar">MR</div><div><div class="reviewer-name">Marcus R.</div><div class="reviewer-title">Software Engineer, San Francisco</div></div></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"We ordered 200 bars for our office and they were gone in a week. Just set up a monthly company subscription. Best decision ever."</p>
+      <div class="reviewer"><div class="reviewer-avatar">AL</div><div><div class="reviewer-name">Amanda L.</div><div class="reviewer-title">Office Manager, NYC</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIPTION -->
+<section id="subscribe">
+  <div class="section-tag">Best Value</div>
+  <h2 class="section-title">The DeskFuel Monthly Box</h2>
+  <div class="sub-card">
+    <div>
+      <h3 class="sub-title">Never Run Out of <span>Fuel</span> Again</h3>
+      <p class="sub-text">Our monthly subscribers get the best price, first access to new flavors, and a monthly surprise. Cancel anytime — no questions asked.</p>
+      <ul class="sub-perks">
+        <li>8 bars per month (mix of flavors)</li>
+        <li>Free shipping on every box</li>
+        <li>First access to new flavors before anyone else</li>
+        <li>DeskPoints rewards on every box</li>
+        <li>10% off add-on single bars</li>
+        <li>Cancel or pause anytime</li>
+      </ul>
+    </div>
+    <div class="sub-price-box">
+      <div class="sub-price">$24<sup style="font-size:1.5rem">.99</sup></div>
+      <div class="sub-price-per">per month · free shipping</div>
+      <div class="sub-includes">8 bars · mixed flavors<br>~$3.12/bar (vs $3.99 each)<br>21% savings vs single purchase</div>
+      <a href="mailto:hello@deskfuel.co" class="sub-cta">Start My Subscription →</a>
+      <p style="font-size:.72rem;color:#555;margin-top:.75rem;">No commitment. Cancel anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag">Our Story</div>
+  <h2 class="section-title">Built at the Desk,<br>for the Desk</h2>
+  <p class="section-sub">DeskFuel Snacks was born from a simple frustration: why do the 58 million people who spend 8+ hours at a desk every day have zero snack brands that actually get them? We built Deskbite to change that. Real flavor. Clean ingredients. No guilt. Just fuel.</p>
+  <div class="about-values">
+    <div class="value-item"><div class="value-icon">🏙️</div><div class="value-name">Austin, TX</div></div>
+    <div class="value-item"><div class="value-icon">🌿</div><div class="value-name">Clean Label</div></div>
+    <div class="value-item"><div class="value-icon">🔥</div><div class="value-name">Bold Flavors</div></div>
+    <div class="value-item"><div class="value-icon">💪</div><div class="value-name">Worker-First</div></div>
+    <div class="value-item"><div class="value-icon">♻️</div><div class="value-name">Sustainable</div></div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <h2>Ready to Fuel Your Day?</h2>
+  <p>Join thousands of desk workers who've upgraded their snack game.</p>
+  <a href="mailto:hello@deskfuel.co" class="btn-white">Order Now — Free Shipping on First Box 🚀</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">Desk<span>Fuel</span> Snacks</div>
+      <p>Premium snack bars crafted for the modern desk worker. Fuel Your Day. Power Your Work.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">Deskbite Original</a></li>
+        <li><a href="#products">Deskbite Espresso</a></li>
+        <li><a href="#products">Coming Soon</a></li>
+        <li><a href="#subscribe">Monthly Box</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#why">Why DeskFuel</a></li>
+        <li><a href="mailto:hello@deskfuel.co">Contact</a></li>
+        <li><a href="mailto:press@deskfuel.co">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram @deskfuel</a></li>
+        <li><a href="#">TikTok @deskfuel</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="mailto:hello@deskfuel.co">hello@deskfuel.co</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 DeskFuel Snacks Co. Austin, TX. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#">📸</a><a href="#">🎵</a><a href="#">▶️</a><a href="#">💼</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Intersection observer for fade-up animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Active nav link highlight
+  window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const scrollY = window.scrollY;
+    sections.forEach(s => {
+      const top = s.offsetTop - 80, bottom = top + s.offsetHeight;
+      const link = document.querySelector(`.nav-links a[href="#${s.id}"]`);
+      if(link) link.style.color = scrollY >= top && scrollY < bottom ? '#EF9F27' : '';
+    });
+  });
+</script>
+</body>
+</html>
